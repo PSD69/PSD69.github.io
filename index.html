@@ -1,12 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to PSD69's Website</title>
+    <title>Baza de Date Persoane</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>This is my personal GitHub page.</p>
+    <h1>Baza de Date Persoane</h1>
+    
+    <div id="database-content">
+        <h2>Lista Persoane</h2>
+        <table id="persoane-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nume</th>
+                    <th>Email</th>
+                    <th>Data Nașterii</th>
+                    <th>Număr Telefon</th>
+                    <th>Sex</th>
+                </tr>
+            </thead>
+            <tbody id="persoane-body">
+                <!-- Conținutul tabelului va fi populat dinamic -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Funcție pentru preluarea și afișarea datelor
+        async function incarcaDatele() {
+            try {
+                const raspuns = await fetch('persoane.json');
+                const persoane = await raspuns.json();
+
+                const corpTabel = document.getElementById('persoane-body');
+                corpTabel.innerHTML = ''; // Curăță conținutul anterior
+
+                persoane.forEach(persoana => {
+                    const rand = `
+                        <tr>
+                            <td>${persoana.id}</td>
+                            <td>${persoana.nume}</td>
+                            <td>${persoana.email}</td>
+                            <td>${new Date(persoana.dataNasterii).toLocaleDateString()}</td>
+                            <td>${persoana.numarTelefon}</td>
+                            <td>${persoana.sex}</td>
+                        </tr>
+                    `;
+                    corpTabel.innerHTML += rand;
+                });
+            } catch (eroare) {
+                console.error('Eroare la încărcarea datelor:', eroare);
+                document.getElementById('persoane-body').innerHTML = `
+                    <tr>
+                        <td colspan="6">Eroare la încărcarea datelor. Verifică conexiunea.</td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Încarcă conținutul bazei de date la încărcarea paginii
+        document.addEventListener('DOMContentLoaded', incarcaDatele);
+    </script>
 </body>
 </html>
