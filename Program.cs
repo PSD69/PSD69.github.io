@@ -9,15 +9,14 @@ using System.Globalization;
 
 namespace ManagementPersoane
 {
-    // Modelul de date pentru persoană
     public class Persoana
     {
         public int Id { get; set; }
-        public string Nume { get; set; }
-        public string Email { get; set; }
+        public string Nume { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
         public DateTime DataNasterii { get; set; }
-        public string NumarTelefon { get; set; }
-        public string Sex { get; set; }
+        public string NumarTelefon { get; set; } = string.Empty;
+        public string Sex { get; set; } = string.Empty;
 
         public int Varsta => CalculeazaVarsta();
 
@@ -31,37 +30,35 @@ namespace ManagementPersoane
         }
     }
 
-    // Validator pentru datele introduse
     public class Validator
     {
-        public static bool ValidareEmail(string email)
+        public static bool ValidareEmail(string? email)
         {
-            // Regex simplu pentru validare email
+            if (string.IsNullOrEmpty(email)) return false;
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, pattern);
         }
 
-        public static bool ValidareNumarTelefon(string numarTelefon)
+        public static bool ValidareNumarTelefon(string? numarTelefon)
         {
-            // Format: +40123456789 sau 0712345678
+            if (string.IsNullOrEmpty(numarTelefon)) return false;
             string pattern = @"^(\+4|0)\d{9,10}$";
             return Regex.IsMatch(numarTelefon, pattern);
         }
 
-        public static bool ValidareNume(string nume)
+        public static bool ValidareNume(string? nume)
         {
-            // Nume fără caractere speciale, doar litere, spații și -
+            if (string.IsNullOrEmpty(nume)) return false;
             string pattern = @"^[a-zA-ZăîâșțĂÎÂȘȚ\s-]+$";
             return Regex.IsMatch(nume, pattern);
         }
 
-        public static bool ValidareSex(string sex)
+        public static bool ValidareSex(string? sex)
         {
-            return sex.ToLower() == "m" || sex.ToLower() == "f";
+            return !string.IsNullOrEmpty(sex) && (sex.ToLower() == "m" || sex.ToLower() == "f");
         }
     }
 
-    // Manager pentru baza de date
     public class BazaDeDate
     {
         private readonly string connectionString;
@@ -137,14 +134,24 @@ namespace ManagementPersoane
                     {
                         while (reader.Read())
                         {
+                            string nume = reader["Nume"]?.ToString() ?? string.Empty;
+                            string email = reader["Email"]?.ToString() ?? string.Empty;
+                            string numarTelefon = reader["NumarTelefon"]?.ToString() ?? string.Empty;
+                            string sex = reader["Sex"]?.ToString() ?? string.Empty;
+                            string dataNasteriiStr = reader["DataNasterii"]?.ToString() ?? string.Empty;
+
+                            DateTime dataNasterii = DateTime.TryParse(dataNasteriiStr, out var parsedDate)
+                                ? parsedDate
+                                : DateTime.MinValue;
+
                             persoane.Add(new Persoana
                             {
                                 Id = Convert.ToInt32(reader["Id"]),
-                                Nume = reader["Nume"].ToString(),
-                                Email = reader["Email"].ToString(),
-                                DataNasterii = DateTime.Parse(reader["DataNasterii"].ToString()),
-                                NumarTelefon = reader["NumarTelefon"].ToString(),
-                                Sex = reader["Sex"].ToString()
+                                Nume = nume,
+                                Email = email,
+                                DataNasterii = dataNasterii,
+                                NumarTelefon = numarTelefon,
+                                Sex = sex
                             });
                         }
                     }
@@ -197,7 +204,6 @@ namespace ManagementPersoane
         }
     }
 
-    // Manager pentru export date
     public class ExportManager
     {
         public static void ExportToJson(List<Persoana> persoane, string filePath = "persoane.json")
@@ -239,6 +245,56 @@ namespace ManagementPersoane
 
             Console.WriteLine($"Raport generat cu succes în {filePath}");
         }
+
+        public static void GenerateIndexHtml(List<Persoana> persoane, string filePath = "index.html")
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("<!DOCTYPE html>");
+                writer.WriteLine("<html lang=\"en\">");
+                writer.WriteLine("<head>");
+                writer.WriteLine("    <meta charset=\"UTF-8\">");
+                writer.WriteLine("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+                writer.WriteLine("    <title>Lista Persoane</title>");
+                writer.WriteLine("    <style>");
+                writer.WriteLine("        body { font-family: Arial, sans-serif; margin: 20px; }");
+                writer.WriteLine("        table { border-collapse: collapse; width: 100%; }");
+                writer.WriteLine("        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }");
+                writer.WriteLine("        th { background-color: #f2f2f2; }");
+                writer.WriteLine("        tr:nth-child(even) { background-color: #f9f9f9; }");
+                writer.WriteLine("    </style>");
+                writer.WriteLine("</head>");
+                writer.WriteLine("<body>");
+                writer.WriteLine("    <h1>Lista Persoane</h1>");
+                writer.WriteLine("    <table>");
+                writer.WriteLine("        <tr>");
+                writer.WriteLine("            <th>Nume</th>");
+                writer.WriteLine("            <th>Email</th>");
+                writer.WriteLine("            <th>Vârsta</th>");
+                writer.WriteLine("            <th>Sex</th>");
+                writer.WriteLine("            <th>Număr Telefon</th>");
+                writer.WriteLine("        </tr>");
+
+                foreach (var persoana in persoane.OrderBy(p => p.Nume))
+                {
+                    writer.WriteLine("        <tr>");
+                    writer.WriteLine($"            <td>{persoana.Nume}</td>");
+                    writer.WriteLine($"            <td>{persoana.Email}</td>");
+                    writer.WriteLine($"            <td>{persoana.Varsta}</td>");
+                    writer.WriteLine($"            <td>{(persoana.Sex.ToLower() == "m" ? "Bărbat" : "Femeie")}</td>");
+                    writer.WriteLine($"            <td>{persoana.NumarTelefon}</td>");
+                    writer.WriteLine("        </tr>");
+                }
+
+                writer.WriteLine("    </table>");
+                writer.WriteLine("    <p><a href=\"persoane.json\">Descarcă JSON</a></p>");
+                writer.WriteLine("    <p><a href=\"raport.txt\">Vezi Raport</a></p>");
+                writer.WriteLine("</body>");
+                writer.WriteLine("</html>");
+            }
+
+            Console.WriteLine($"index.html generat cu succes în {filePath}");
+        }
     }
 
     class Program
@@ -251,7 +307,6 @@ namespace ManagementPersoane
 
             var db = new BazaDeDate();
             
-            // Adăugăm câteva persoane de test dacă nu există date
             var persoane = db.ObtineToatePersoanele();
             if (!persoane.Any())
             {
@@ -259,9 +314,9 @@ namespace ManagementPersoane
                 persoane = db.ObtineToatePersoanele();
             }
 
-            // Export date pentru GitHub Pages
             ExportManager.ExportToJson(persoane);
             ExportManager.GenerareRaport(persoane);
+            ExportManager.GenerateIndexHtml(persoane);
 
             Console.WriteLine($"Total persoane în baza de date: {persoane.Count}");
             Console.WriteLine("Date exportate cu succes pentru GitHub Pages.");
