@@ -297,63 +297,6 @@ namespace ManagementPersoane
                 Console.WriteLine($"Eroare la generarea raportului: {ex.Message}");
             }
         }
-
-        public static void GenerateIndexHtml(List<Persoana> persoane, string filePath = "index.html")
-        {
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(filePath))
-                {
-                    writer.WriteLine("<!DOCTYPE html>");
-                    writer.WriteLine("<html lang=\"en\">");
-                    writer.WriteLine("<head>");
-                    writer.WriteLine("    <meta charset=\"UTF-8\">");
-                    writer.WriteLine("    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-                    writer.WriteLine("    <title>Lista Persoane</title>");
-                    writer.WriteLine("    <style>");
-                    writer.WriteLine("        body { font-family: Arial, sans-serif; margin: 20px; }");
-                    writer.WriteLine("        table { border-collapse: collapse; width: 100%; }");
-                    writer.WriteLine("        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }");
-                    writer.WriteLine("        th { background-color: #f2f2f2; }");
-                    writer.WriteLine("        tr:nth-child(even) { background-color: #f9f9f9; }");
-                    writer.WriteLine("    </style>");
-                    writer.WriteLine("</head>");
-                    writer.WriteLine("<body>");
-                    writer.WriteLine("    <h1>Lista Persoane</h1>");
-                    writer.WriteLine("    <table>");
-                    writer.WriteLine("        <tr>");
-                    writer.WriteLine("            <th>Nume</th>");
-                    writer.WriteLine("            <th>Email</th>");
-                    writer.WriteLine("            <th>Vârsta</th>");
-                    writer.WriteLine("            <th>Sex</th>");
-                    writer.WriteLine("            <th>Număr Telefon</th>");
-                    writer.WriteLine("        </tr>");
-
-                    foreach (var persoana in persoane.OrderBy(p => p.Nume))
-                    {
-                        writer.WriteLine("        <tr>");
-                        writer.WriteLine($"            <td>{persoana.Nume}</td>");
-                        writer.WriteLine($"            <td>{persoana.Email}</td>");
-                        writer.WriteLine($"            <td>{persoana.Varsta}</td>");
-                        writer.WriteLine($"            <td>{(persoana.Sex.ToLower() == "m" ? "Bărbat" : "Femeie")}</td>");
-                        writer.WriteLine($"            <td>{persoana.NumarTelefon}</td>");
-                        writer.WriteLine("        </tr>");
-                    }
-
-                    writer.WriteLine("    </table>");
-                    writer.WriteLine("    <p><a href=\"persoane.json\">Descarcă JSON</a></p>");
-                    writer.WriteLine("    <p><a href=\"raport.txt\">Vezi Raport</a></p>");
-                    writer.WriteLine("</body>");
-                    writer.WriteLine("</html>");
-                }
-
-                Console.WriteLine($"index.html generat cu succes în {filePath}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Eroare la generarea index.html: {ex.Message}");
-            }
-        }
     }
 
     class Program
