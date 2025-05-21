@@ -1,361 +1,415 @@
-<!DOCTYPE html>
+[23:03, 21.05.2025] Patrick Sichet: <!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Management Persoane - Bază de Date</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Călătorii în jurul lumii</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 20px;
-            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
-        .header {
-            background-color: #343a40;
+        header {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
             color: white;
-            padding: 30px 0;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: none;
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
         }
-        .stats-card {
-            transition: transform 0.3s;
+        h2 {
+            color: #6e8efb;
+            border-bottom: 2px solid #a777e3;
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
         }
-        .stats-card:hover {
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-top: -50px;
+        }
+        p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+        ul, ol {
+            padding-left: 2rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: block;
+            margin: 2rem auto;
+        }
+        a {
+            color: #6e8efb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #a777e3;
+            text-decoration: underline;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            margin: 2rem 0;
+        }
+        .destination-list {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .destination-list li {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .destination-list li:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .table-responsive {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .chart-container {
-            height: 300px;
-        }
-        .footer {
-            margin-top: 40px;
-            padding: 20px 0;
-            background-color: #343a40;
-            color: #f8f9fa;
-            border-radius: 10px;
-        }
-        .gender-m {
-            color: #1e88e5;
-        }
-        .gender-f {
-            color: #e91e63;
-        }
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Călătorii în jurul lumii</h1>
+    </header>
+    
     <div class="container">
-        <div class="header text-center">
-            <h1><i class="fas fa-database"></i> Management Persoane</h1>
-            <p class="lead">Bază de date cu informații despre persoane</p>
-        </div>
-
-        <div id="loading">
-            <p class="text-center">Se încarcă datele...</p>
-            <div class="loader"></div>
-        </div>
-
-        <div id="content" style="display: none;">
-            <!-- Statistici -->
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="card stats-card bg-primary text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fas fa-users"></i> Total Persoane</h5>
-                            <h2 id="totalPersoane">0</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card stats-card bg-info text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fas fa-calendar-alt"></i> Vârsta Medie</h5>
-                            <h2 id="varstaMedia">0</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card stats-card bg-success text-white">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><i class="fas fa-venus-mars"></i> Raport M/F</h5>
-                            <h2 id="raportMF">0% / 0%</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grafic distribuție -->
-            <div class="card mb-4">
-                <div class="card-header bg-dark text-white">
-                    <h5><i class="fas fa-chart-pie"></i> Distribuție pe sexe</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <canvas id="genderChart" class="chart-container"></canvas>
-                        </div>
-                        <div class="col-md-6">
-                            <canvas id="ageChart" class="chart-container"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabel persoane -->
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <h5><i class="fas fa-table"></i> Lista Persoane</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover" id="persoaneTabel">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nume</th>
-                                    <th>Email</th>
-                                    <th>Data Nașterii</th>
-                                    <th>Vârstă</th>
-                                    <th>Telefon</th>
-                                    <th>Sex</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Date vor fi încărcate dinamic -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Raport -->
-            <div class="card mt-4">
-                <div class="card-header bg-dark text-white">
-                    <h5><i class="fas fa-file-alt"></i> Raport Detaliat</h5>
-                </div>
-                <div class="card-body">
-                    <pre id="raportText" class="bg-light p-3 rounded"></pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer text-center">
-            <p>Aplicație dezvoltată cu C# și SQLite | <i class="fas fa-code"></i> GitHub Pages</p>
-            <p>Data ultimei actualizări: <span id="lastUpdate"></span></p>
-        </div>
+        <h2>Explorează destinații fascinante</h2>
+        
+        <p>Bine ați venit pe pagina noastră dedicată călătoriilor! Aici veți găsi informații despre unele dintre cele mai interesante locuri din lume pe care le puteți vizita. O călătorie nu înseamnă doar a vedea locuri noi, ci și o experiență care vă îmbogățește viața și vă lărgește orizonturile.</p>
+        
+        <img src="/api/placeholder/800/400" alt="Peisaj montan spectaculos">
+        
+        <h2>Destinații populare în 2025</h2>
+        
+        <p>Anul 2025 aduce noi tendințe în domeniul călătoriilor. Iată câteva dintre destinațiile care au devenit extrem de populare:</p>
+        
+        <ul class="destination-list">
+            <li><strong>Kyoto, Japonia</strong> - Un amestec perfect între tradiție și modernitate</li>
+            <li><strong>Coasta Amalfi, Italia</strong> - Peisaje spectaculoase și gastronomie excelentă</li>
+            <li><strong>Insulele Galapagos</strong> - Paradisul biodiversității și al naturii nealterate</li>
+            <li><strong>Marrakech, Maroc</strong> - Culori vibrante și o cultură fascinantă</li>
+            <li><strong>Noua Zeelandă</strong> - Aventuri în natură și peisaje care îți taie respirația</li>
+        </ul>
+        
+        <hr>
+        
+        <h2>Sfaturi pentru călători</h2>
+        
+        <ol>
+            <li>Planificați din timp și cercetați destinația</li>
+            <li>Împachetați inteligent, luând doar ce este necesar</li>
+            <li>Respectați cultura și obiceiurile locale</li>
+            <li>Păstrați o copie a documentelor importante</li>
+            <li>Învățați câteva fraze de bază în limba locală</li>
+        </ol>
+        
+        <p>Pentru mai multe sfaturi și inspirație, vizitați <a href="https://www.worldtravelguide.net" target="_blank">World Travel Guide</a>, una dintre cele mai complete resurse pentru călători.</p>
+        
+        <hr>
+        
+        <p>Nu uitați să împărtășiți experiențele voastre de călătorie cu prietenii și familia. Fiecare poveste de călătorie este unică și poate inspira pe alții să exploreze lumea!</p>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Încarcă datele
-            loadData();
-            
-            // Setează data ultimei actualizări
-            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ro-RO');
-        });
-
-        async function loadData() {
-            try {
-                // Încarcă fișierul JSON cu persoane
-                const response = await fetch('persoane.json');
-                if (!response.ok) {
-                    throw new Error('Nu s-a putut încărca fișierul JSON');
-                }
-                
-                const persoane = await response.json();
-                
-                // Încarcă fișierul de raport
-                const raportResponse = await fetch('raport.txt');
-                if (raportResponse.ok) {
-                    const raportText = await raportResponse.text();
-                    document.getElementById('raportText').textContent = raportText;
-                }
-
-                // Afișează datele
-                displayData(persoane);
-                
-                // Ascunde indicator încărcare și afișează conținut
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-            } catch (error) {
-                console.error('Eroare la încărcarea datelor:', error);
-                document.getElementById('loading').innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle"></i> Eroare la încărcarea datelor. Detalii: ${error.message}
-                    </div>
-                `;
-            }
+    
+    <footer>
+        <p>&copy; 2025 Călătorii în jurul lumii | Toate drepturile rezervate</p>
+    </footer>
+</body>
+</html>
+[23:09, 21.05.2025] Patrick Sichet: <!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descoperă Barcelona</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        function displayData(persoane) {
-            // Actualizează statistici
-            document.getElementById('totalPersoane').textContent = persoane.length;
-            
-            // Calculează vârsta medie
-            const varstaTotal = persoane.reduce((sum, p) => sum + calculateAge(p.dataNasterii), 0);
-            const varstaMedia = persoane.length > 0 ? (varstaTotal / persoane.length).toFixed(1) : 0;
-            document.getElementById('varstaMedia').textContent = varstaMedia;
-            
-            // Calculează raport M/F
-            const nrBarbati = persoane.filter(p => p.sex.toLowerCase() === 'm').length;
-            const nrFemei = persoane.filter(p => p.sex.toLowerCase() === 'f').length;
-            const procentajBarbati = persoane.length > 0 ? ((nrBarbati / persoane.length) * 100).toFixed(1) : 0;
-            const procentajFemei = persoane.length > 0 ? ((nrFemei / persoane.length) * 100).toFixed(1) : 0;
-            document.getElementById('raportMF').textContent = `${procentajBarbati}% / ${procentajFemei}%`;
-            
-            // Populează tabelul
-            const tbody = document.querySelector('#persoaneTabel tbody');
-            tbody.innerHTML = '';
-            
-            persoane.forEach(persoana => {
-                const row = document.createElement('tr');
-                
-                const varsta = calculateAge(persoana.dataNasterii);
-                const sexIcon = persoana.sex.toLowerCase() === 'm' ? 
-                    '<i class="fas fa-male gender-m"></i>' : 
-                    '<i class="fas fa-female gender-f"></i>';
-                
-                row.innerHTML = `
-                    <td>${persoana.id}</td>
-                    <td>${persoana.nume}</td>
-                    <td><a href="mailto:${persoana.email}">${persoana.email}</a></td>
-                    <td>${formatDate(persoana.dataNasterii)}</td>
-                    <td>${varsta}</td>
-                    <td><a href="tel:${persoana.numarTelefon}">${persoana.numarTelefon}</a></td>
-                    <td>${sexIcon} ${persoana.sex.toUpperCase()}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-            
-            // Generează grafice
-            createGenderChart(nrBarbati, nrFemei);
-            createAgeChart(persoane);
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
-
-        function calculateAge(dateString) {
-            const today = new Date();
-            const birthDate = new Date(dateString);
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            return age;
+        
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            color: white;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
         }
-
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            return new Date(dateString).toLocaleDateString('ro-RO', options);
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-
-        function createGenderChart(nrBarbati, nrFemei) {
-            const ctx = document.getElementById('genderChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Bărbați', 'Femei'],
-                    datasets: [{
-                        data: [nrBarbati, nrFemei],
-                        backgroundColor: ['#1e88e5', '#e91e63'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Distribuție pe sexe'
-                        }
-                    }
-                }
-            });
+        
+        h2 {
+            font-size: 1.8rem;
+            color: #e74c3c;
+            margin: 1.5rem 0;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 0.5rem;
         }
-
-        function createAgeChart(persoane) {
-            const ageGroups = {
-                '0-18': 0,
-                '19-30': 0,
-                '31-45': 0,
-                '46-60': 0,
-                '61+': 0
-            };
-            
-            persoane.forEach(persoana => {
-                const age = calculateAge(persoana.dataNasterii);
-                if (age <= 18) ageGroups['0-18']++;
-                else if (age <= 30) ageGroups['19-30']++;
-                else if (age <= 45) ageGroups['31-45']++;
-                else if (age <= 60) ageGroups['46-60']++;
-                else ageGroups['61+']++;
-            });
-            
-            const ctx = document.getElementById('ageChart').getContext('2d');
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(ageGroups),
-                    datasets: [{
-                        label: 'Număr persoane',
-                        data: Object.values(ageGroups),
-                        backgroundColor: '#6f42c1',
-                        borderColor: '#6610f2',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Distribuție pe vârste'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        }
-                    }
-                }
-            });
+        
+        .tagline {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-style: italic;
         }
-    </script>
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: -50px;
+            position: relative;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .attractions {
+            margin: 2rem 0;
+        }
+        
+        ul {
+            list-style-type: none;
+        }
+        
+        .attraction-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .attraction-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .attraction-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .attraction-item h3 {
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+        }
+        
+        img {
+            width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: #c0392b;
+            text-decoration: underline;
+        }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+            margin: 2rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #333;
+            color: white;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BARCELONA</h1>
+        <p class="tagline">Artă, cultură și pasiune într-un singur oraș</p>
+    </header>
+    
+    <div class="container">
+        <h2>Descoperă magia Barcelonei</h2>
+        
+        <p>Barcelona, capitala regiunii Catalonia din Spania, este un oraș care combină în mod armonios istoria bogată, arhitectura spectaculoasă, plajele superbe și o viață culturală vibrantă. Situat pe coasta mediteraneană, acest oraș cosmopolit atrage milioane de turiști în fiecare an datorită atracțiilor sale unice și atmosferei sale speciale. De la operele arhitecturale ale lui Antoni Gaudí până la străzile înguste din Cartierul Gotic, Barcelona oferă experiențe memorabile pentru toți vizitatorii săi.</p>
+        
+        <img src="/api/placeholder/1000/500" alt="Panoramă a Barcelonei cu Sagrada Familia">
+        
+        <div class="attractions">
+            <h2>Atracții turistice de neratat</h2>
+            
+            <ul class="attraction-list">
+                <li class="attraction-item">
+                    <h3>Sagrada Familia</h3>
+                    <p>Capodopera lui Antoni Gaudí, aflată încă în construcție. Această bazilică impresionantă combină elemente gotice și Art Nouveau într-un mod unic.</p>
+                </li>
+                <li class="attraction-item">
+                    <h3>Park Güell</h3>
+                    <p>Un parc public cu elemente arhitecturale proiectate de Gaudí, oferind o priveliște panoramică asupra orașului și a Mării Mediterane.</p>
+                </li>
+                <li class="attraction-item">
+                    <h3>La Rambla</h3>
+                    <p>Celebrul bulevard pietonal din centrul orașului, flancat de copaci și clădiri istorice, plin de magazine, restaurante și artiști stradali.</p>
+                </li>
+                <li class="attraction-item">
+                    <h3>Cartierul Gotic</h3>
+                    <p>Centrul vechi al Barcelonei, cu străzi înguste pavate cu piatră și clădiri medievale bine conservate.</p>
+                </li>
+                <li class="attraction-item">
+                    <h3>Plaja Barceloneta</h3>
+                    <p>Una dintre cele mai populare plaje urbane din lume, ideală pentru relaxare și sporturi acvatice.</p>
+                </li>
+            </ul>
+        </div>
+        
+        <hr>
+        
+        <h2>Informații utile pentru turiști</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Atracție turistică</th>
+                    <th>Program</th>
+                    <th>Preț bilet (adulți)</th>
+                    <th>Preț bilet (copii)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sagrada Familia</td>
+                    <td>9:00 - 18:00</td>
+                    <td>26 €</td>
+                    <td>10 €</td>
+                </tr>
+                <tr>
+                    <td>Park Güell</td>
+                    <td>9:30 - 19:30</td>
+                    <td>10 €</td>
+                    <td>7 €</td>
+                </tr>
+                <tr>
+                    <td>Casa Batlló</td>
+                    <td>9:00 - 20:00</td>
+                    <td>25 €</td>
+                    <td>22 €</td>
+                </tr>
+                <tr>
+                    <td>Camp Nou (Stadionul FC Barcelona)</td>
+                    <td>10:00 - 18:30</td>
+                    <td>28 €</td>
+                    <td>22 €</td>
+                </tr>
+                <tr>
+                    <td>Muzeul Picasso</td>
+                    <td>10:00 - 20:00</td>
+                    <td>12 €</td>
+                    <td>7 €</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p>Pentru mai multe informații despre atracțiile turistice, evenimente culturale și sfaturi de călătorie, vizitați <a href="https://www.barcelonaturisme.com" target="_blank">site-ul oficial de turism al Barcelonei</a>.</p>
+        
+        <hr>
+        
+        <h2>Când să vizitezi Barcelona</h2>
+        
+        <p>Cele mai bune perioade pentru a vizita Barcelona sunt primăvara (aprilie-iunie) și toamna (septembrie-noiembrie), când vremea este plăcută și există mai puțini turiști comparativ cu sezonul de vârf din vară. În timpul verii, temperaturile pot depăși frecvent 30°C, iar plajele și atracțiile turistice sunt foarte aglomerate. Iarna este blândă, cu temperaturi în jur de 10-15°C, și oferă o experiență mai autentică a vieții locale.</p>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Descoperă Barcelona | Toate drepturile rezervate</p>
+    </footer>
 </body>
 </html>
