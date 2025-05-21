@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axolotl - Salamandra care nu crește niciodată</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #6a0dad;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: #6a0dad;
+            margin: 30px 0 15px 0;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 30px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        hr {
+            border: none;
+            height: 2px;
+            background-color: #e0e0e0;
+            margin: 40px 0;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        a {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #f1f1f1;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .fact-box {
+            background-color: #f0ebf8;
+            border-left: 4px solid #6a0dad;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Axolotl</h1>
+    </header>
+    
+    <div class="container">
+        <h2>Cea mai ciudată salamandră din lume</h2>
+        
+        <img src="/api/placeholder/600/400" alt="Axolotl cu branhii externe rozalii">
+        
+        <p>Axolotlul (Ambystoma mexicanum) este o salamandră acvatică extrem de neobișnuită, originară din lacul Xochimilco din Mexico City. Acest animal fascinant este cunoscut pentru capacitatea sa unică de a rămâne în stadiul larvar (neomorfism) pe tot parcursul vieții, păstrând branhiile externe și alte caracteristici juvenile care îi conferă un aspect unic și adorabil.</p>
+        
+        <p>Habitatul său natural este reprezentat de lacurile de apă dulce, cu vegetație abundentă și apă limpede. Din păcate, din cauza urbanizării extinse și a poluării, axolotlul este acum clasificat ca fiind în pericol critic de dispariție în sălbăticie.</p>
+        
+        <div class="fact-box">
+            <p>Numele "axolotl" provine din limba Nahuatl (vorbită de azteci) și se referă la zeul aztec al apei, Xolotl.</p>
+        </div>
+        
+        <hr>
+        
+        <h2>Curiozități despre Axolotl</h2>
+        
+        <ul>
+            <li><strong>Regenerare incredibilă</strong> - Axolotlul poate regenera membre întregi, părți ale creierului, măduvei spinării și alte organe fără cicatrici.</li>
+            <li><strong>Neotenie permanentă</strong> - Este una dintre puținele specii care manifestă neotenia (reținerea caracteristicilor juvenile în stadiul adult) ca trăsătură normală.</li>
+            <li><strong>Branhii externe</strong> - Branhiile externe, asemănătoare unor ramificații decorative, sunt de fapt funcționale și îi permit să respire sub apă.</li>
+            <li><strong>Varietate de culori</strong> - În captivitate, axolotlii pot fi găsiți în diverse culori, inclusiv alb (albino), auriu, maro, negru și chiar cu pete.</li>
+            <li><strong>Longevitate</strong> - În condiții optime, poate trăi până la 15 ani în captivitate.</li>
+        </ul>
+        
+        <hr>
+        
+        <h2>Date fizice despre Axolotl</h2>
+        
+        <table>
+            <tr>
+                <th>Caracteristică</th>
+                <th>Valoare</th>
+            </tr>
+            <tr>
+                <td>Lungime medie</td>
+                <td>15-30 cm</td>
+            </tr>
+            <tr>
+                <td>Greutate medie</td>
+                <td>60-200 g</td>
+            </tr>
+            <tr>
+                <td>Durata medie de viață</td>
+                <td>10-15 ani (în captivitate)</td>
+            </tr>
+            <tr>
+                <td>Vârstă maturitate</td>
+                <td>12-18 luni</td>
+            </tr>
+            <tr>
+                <td>Număr de ouă depuse</td>
+                <td>100-300 per reproducere</td>
+            </tr>
+        </table>
+        
+        <hr>
+        
+        <h2>Importanța ecologică și științifică</h2>
+        
+        <p>Pe lângă faptul că este o specie emblematică pentru biodiversitatea mexicană, axolotlul reprezintă un subiect extrem de important pentru cercetările medicale și biologice. Capacitatea sa de regenerare este studiată intens de oamenii de știință care speră să descopere secretele regenerării țesuturilor și organelor, cu potențiale aplicații în medicina regenerativă umană.</p>
+        
+        <p>Deși în sălbăticie axolotlul este pe cale de dispariție, în laboratoare și acvarii este crescut cu succes, permițând continuarea cercetărilor și conservarea speciei.</p>
+        
+        <p>Pentru mai multe informații despre această creatură fascinantă, puteți vizita <a href="https://amphibiaweb.org" target="_blank">AmphibiaWeb</a>, o resursă de încredere despre amfibieni din întreaga lume.</p>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Pagină creată pentru proiectul HTML</p>
+    </footer>
+</body>
+</html>
