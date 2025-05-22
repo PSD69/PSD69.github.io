@@ -450,32 +450,34 @@
                         <div class="gallery-overlay-text">Moment Artistic</div>
                     </div>
                 </div>
-                
                 <div class="gallery-item">
                     <img src="eubuzunar.jpeg" alt="Performanță Muzicală">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">Performanță Muzicală</div>
                     </div>
                 </div>
-                
                 <div class="gallery-item">
                     <img src="masa.jpeg" alt="Studio">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">Studio</div>
                     </div>
                 </div>
-                
                 <div class="gallery-item">
-                    <img src="eusax2.jpeg" alt="Saxofon">
+                    <img src="eusax2.jpeg" alt="Saxofon 2">
                     <div class="gallery-overlay">
-                        <div class="gallery-overlay-text">Saxofon</div>
+                        <div class="gallery-overlay-text">Saxofon 2</div>
                     </div>
                 </div>
-                
                 <div class="gallery-item">
                     <img src="favoriteplace.jpeg" alt="Locul Preferat">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">Locul Preferat</div>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="eusax1.jpeg" alt="Saxofon 1">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-text">Saxofon 1</div>
                     </div>
                 </div>
             </div>
@@ -536,12 +538,9 @@
 
     <!-- Modal for gallery -->
     <div id="galleryModal" class="modal">
-        <span class="modal-close">&times;</span>
+        <span class="modal-close">×</span>
         <div class="modal-content">
-            <div id="modalPlaceholder" style="text-align: center; color: white; font-size: 1.2rem;">
-                <p>📸 Aici va fi afișată fotografia selectată</p>
-                <p style="margin-top: 20px; opacity: 0.8;">Încărcați fotografiile pentru a le vedea în galerie</p>
-            </div>
+            <img id="modalImage" src="" alt="Selected Image">
         </div>
     </div>
 
@@ -579,11 +578,15 @@
 
         // Gallery functionality
         const modal = document.getElementById('galleryModal');
+        const modalImage = document.getElementById('modalImage');
         const modalClose = document.querySelector('.modal-close');
         const galleryItems = document.querySelectorAll('.gallery-item');
 
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                modalImage.src = imgSrc;
+                modalImage.alt = item.querySelector('img').alt;
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             });
