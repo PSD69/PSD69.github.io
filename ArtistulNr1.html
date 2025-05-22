@@ -545,6 +545,18 @@
     </div>
 
     <script>
+        // Debug image loading errors
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('error', () => {
+                console.error(`Failed to load image: ${img.src}`);
+                img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwADZQDe4H6+3gAAAABJRU5ErkJggg=='; // Fallback transparent pixel
+                img.alt = 'Image failed to load';
+            });
+            img.addEventListener('load', () => {
+                console.log(`Successfully loaded image: ${img.src}`);
+            });
+        });
+
         // Animație pentru scroll reveal
         const observerOptions = {
             threshold: 0.1,
