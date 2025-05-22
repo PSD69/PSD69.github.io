@@ -388,10 +388,6 @@
             .gallery-grid {
                 grid-template-columns: 1fr;
             }
-
-            .gallery-placeholder {
-                font-size: 2rem;
-            }
         }
     </style>
 </head>
@@ -545,15 +541,20 @@
     </div>
 
     <script>
-        // Debug image loading errors
+        // Enhanced debug for image loading
         document.querySelectorAll('.gallery-item img').forEach(img => {
+            // Log the absolute URL being attempted
+            const absoluteURL = new URL(img.src, window.location.origin).href;
+            console.log(`Attempting to load image: ${absoluteURL}`);
+            
+            img.addEventListener('load', () => {
+                console.log(`Successfully loaded image: ${absoluteURL}`);
+            });
+            
             img.addEventListener('error', () => {
-                console.error(`Failed to load image: ${img.src}`);
+                console.error(`Failed to load image: ${absoluteURL}`);
                 img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwADZQDe4H6+3gAAAABJRU5ErkJggg=='; // Fallback transparent pixel
                 img.alt = 'Image failed to load';
-            });
-            img.addEventListener('load', () => {
-                console.log(`Successfully loaded image: ${img.src}`);
             });
         });
 
