@@ -431,7 +431,7 @@
                 </div>
                 <div class="skill-card">
                     <h3>🎨 Creativitate Artistică</h3>
-                    <p>Explorarea diferitelor forme de expresie artistică și dezvoltarea unei viziuni creative personale.</p>
+                    <p>Explorarea diferitelor forme de expresie artistic Anybody can create art, but it takes courage to share it with the world.ică și dezvoltarea unei viziuni creative personale.</p>
                 </div>
             </div>
         </section>
@@ -441,38 +441,37 @@
             <p>O colecție de momente speciale din parcursul meu artistic și educațional.</p>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="euumar.jpeg" alt="euumar">
+                    <img src="images/euumar.jpeg" alt="euumar">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">euumar</div>
-                  
-                </div>>
+                    </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="eubuzunar.jpeg" alt="eubuzunar">
+                    <img src="images/eubuzunar.jpeg" alt="eubuzunar">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">eubuzunar</div>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="masa.jpeg" alt="masa">
+                    <img src="images/masa.jpeg" alt="masa">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">masa</div>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="eusax2.jpeg" alt="eusax2">
+                    <img src="images/eusax2.jpeg" alt="eusax2">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">eusax2</div>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="favoriteplace.jpeg" alt="favoriteplace">
+                    <img src="images/favoriteplace.jpeg" alt="favoriteplace">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">favoriteplace</div>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="eusax1.jpeg" alt="eusax1">
+                    <img src="images/eusax1.jpeg" alt="eusax1">
                     <div class="gallery-overlay">
                         <div class="gallery-overlay-text">eusax1</div>
                     </div>
@@ -542,18 +541,17 @@
     </div>
 
     <script>
-        // Enhanced debug for image loading
+        // Simplified debug for image loading
         document.querySelectorAll('.gallery-item img').forEach(img => {
-            // Log the absolute URL being attempted
-            const absoluteURL = new URL(img.src, window.location.origin).href;
-            console.log(`Attempting to load image: ${absoluteURL}`);
+            const logURL = img.src; // Use relative path directly
+            console.log(`Attempting to load image: ${logURL}`);
             
             img.addEventListener('load', () => {
-                console.log(`Successfully loaded image: ${absoluteURL}`);
+                console.log(`Successfully loaded image: ${logURL}`);
             });
             
             img.addEventListener('error', () => {
-                console.error(`Failed to load image: ${absoluteURL}`);
+                console.error(`Failed to load image: ${logURL}`);
                 img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwADZQDe4H6+3gAAAABJRU5ErkJggg=='; // Fallback transparent pixel
                 img.alt = 'Image failed to load';
             });
